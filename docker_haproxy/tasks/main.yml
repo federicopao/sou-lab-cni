@@ -1,0 +1,33 @@
+---
+# tasks file for docker_haproxy
+- name: Create HAProxy config directory
+  file:
+    path: /opt/haproxy
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: Create HAProxy configuration file from template
+  template:
+    src: haproxy.cfg.j2
+    dest: /opt/haproxy/haproxy.cfg
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Pull HAProxy Docker image
+  docker_image:
+    name: "{{ haproxy_image }}"
+    source: pull
+
+- name: Run HAProxy container
+  docker_container:
+    name: haproxy
+    image: "{{ haproxy_image }}"
+    ports:
+      - "{{ haproxy_port }}:80"
+    volumes:
+      - /opt/haproxy/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg
+    state: started
+    restart_policy: always

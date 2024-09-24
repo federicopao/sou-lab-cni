@@ -1,0 +1,21 @@
+- hosts: all
+  become: yes
+  tasks:
+   - name: install Docker
+     apt:
+       name: docker.io
+       state: present
+       update_cache: true
+
+- hosts: node1
+  become: yes
+  roles:
+    - docker_haproxy
+       
+
+- hosts: node2
+  become: yes
+  roles:
+    - docker_prometheus_grafana
+   
+ 

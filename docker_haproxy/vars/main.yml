@@ -1,0 +1,6 @@
+---
+# vars file for docker_haproxy
+haproxy_image: "haproxy:latest"
+grafana_ip: "192.168.56.22"
+grafana_port: 3000
+haproxy_port: 8080

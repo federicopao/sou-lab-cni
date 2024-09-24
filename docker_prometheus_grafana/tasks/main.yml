@@ -1,0 +1,64 @@
+---
+# tasks file for docker_prometheus_grafana
+- name: Install required packages
+  ansible.builtin.package:
+    name: 
+      - python3-pip
+    state: present
+
+- name: Create Prometheus config directory
+  file:
+    path: /opt/prometheus
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'    
+
+- name: Create HAProxy configuration file from template
+  template:
+    src: prometheus.yml
+    dest: /opt/prometheus/prometheus.yml
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Install Docker SDK for Python (docker-py)
+  pip:
+    name: docker
+    state: present
+
+- name: Start Docker service
+  service:
+    name: docker
+    state: started
+    enabled: true
+
+- name: Pull Prometheus Docker image
+  docker_image:
+    name: prom/prometheus:latest
+    source: pull
+
+- name: Run Prometheus container
+  docker_container:
+    name: prometheus
+    image: prom/prometheus:latest
+    ports:
+      - 9090:9090
+    volumes:
+      - /opt/prometheus:/etc/prometheus
+    state: started
+    restart_policy: always
+
+- name: Pull Grafana Docker image
+  docker_image:
+    name: grafana/grafana:latest
+    source: pull
+
+- name: Run Grafana container
+  docker_container:
+    name: grafana
+    image: grafana/grafana:latest
+    ports:
+      - 3000:3000
+    state: started
+    restart_policy: always

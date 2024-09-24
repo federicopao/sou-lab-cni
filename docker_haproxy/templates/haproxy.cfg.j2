@@ -1,0 +1,17 @@
+global
+    log stdout format raw local0
+    maxconn 4096
+
+defaults
+    log global
+    option httplog
+    timeout connect 5000ms
+    timeout client 50000ms
+    timeout server 50000ms
+
+frontend http_front
+    bind *:80
+    default_backend grafana_backend
+
+backend grafana_backend
+    server grafana {{ grafana_ip }}:{{ grafana_port }} check
