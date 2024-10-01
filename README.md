@@ -18,4 +18,7 @@ nell'altro nodo sono presenti Grafana e Prometheus, ognuno nel suo container.
 
 L'Haproxy è configurato in modo tale da operare come reverse proxy per Grafana.
 
+Le configurazioni necessarie sono definite nella cartella templates del rispettivo ruolo,
+l'Haproxy è configurato in modo tale che inserendo il suo IP con la porta 8080 si connette a grafana che a sua volta potrà essere connesso a prometheus.
+Prometheus ha all'attivo una configurazione base che ha lo scopo solo di vedere se l'applicativo fosse in grado di connettersi a grafana.
 
