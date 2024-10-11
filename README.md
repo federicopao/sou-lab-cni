@@ -14,7 +14,7 @@ ogni ruolo esegue le task a lui assegnate su uno dei due nodi:
 ```
 
 In un nodo è installato HaProxy in un container,
-nell'altro nodo sono presenti Grafana e Prometheus, ognuno nel suo container.
+nell'altro nodo sono presenti Grafana e Prometheus, ognuno nel suo container, poi abbiamo il node exporter installato e il container con cadvisor.
 
 Prometheus riceve le metriche da un node exporter in modo tale da monitore lo stato della macchina node2.
 per attivare il node exporter eseguire i seguenti comandi:
@@ -28,7 +28,7 @@ cd node_exporter-0.18.1.linux-arm64
 sudo docker restart prometheus
 ```
 
-In seguito nel browser verificare che prometheus sia connesso al node exporter all'indirizzo:
+In seguito nel browser verificare che prometheus sia connesso al node exporter e al cadvisor all'indirizzo:
 
 ```
 http://192.168.56.22:9090/targets
