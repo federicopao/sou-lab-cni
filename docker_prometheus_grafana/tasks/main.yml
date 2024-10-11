@@ -14,7 +14,7 @@
     group: root
     mode: '0755'    
 
-- name: Create HAProxy configuration file from template
+- name: Create prometheus configuration file from template
   template:
     src: prometheus.yml
     dest: /opt/prometheus/prometheus.yml
@@ -32,6 +32,20 @@
     name: docker
     state: started
     enabled: true
+
+- name: Run cadvisor container
+  docker_container:
+    name: cadvisor
+    image: gcr.io/cadvisor/cadvisor-arm64:v0.50.0
+    ports:
+      - 8080:8080
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+    state: started
+    restart_policy: always
 
 - name: install and launch node exporte
   shell: "wget https://github.com/prometheus/node_exporter/releases/download/v0.18.1/node_exporter-0.18.1.linux-arm64.tar.gz && tar zxvf node_exporter-0.18.1.linux-arm64.tar.gz"
