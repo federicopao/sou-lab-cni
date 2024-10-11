@@ -33,6 +33,9 @@
     state: started
     enabled: true
 
+- name: install and launch node exporte
+  shell: "wget https://github.com/prometheus/node_exporter/releases/download/v0.18.1/node_exporter-0.18.1.linux-arm64.tar.gz && tar zxvf node_exporter-0.18.1.linux-arm64.tar.gz"
+
 - name: Pull Prometheus Docker image
   docker_image:
     name: prom/prometheus:latest
